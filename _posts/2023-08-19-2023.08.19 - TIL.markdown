@@ -1,0 +1,143 @@
+---
+layout: posts
+title:  "2023.08.19 토요일"
+date:   2023-08-19 21:00:00 +0900
+categories: TIL
+---
+---
+# DOM (Document Object Model, 문서 객체 모델)
+DOM은 HTML을 트리 구조를 가진 데이터로 표현하고, 이 데이터를 생성하거나 수정, 삭제하는 등의 여러 기능을 제공하는 인터페이스이다. 우리는 DOM의 기능을 사용하는 코드를 작성해 다양한 동적 기능을 구현할 수 있다.
+
+# Class
+Class는 객체의 형태를 정해놓은 것이라고 보면 된다. 즉, 객체가 어떤 값을 가지고 어떤 기능을 하는지 정해놓은 것이다. 이 Class를 바탕으로 만들어진 객체를 인스턴스라고 한다.
+## 생성자
+Class 내부에서 constructor()를 선언해 만들 수 있다. 그리고, 이 생성자를 활용해 인스턴스를 만들면서 값을 설정해 줄 수 있다.
+``` javascript
+class People {
+    constructor(name, age, state) {
+        this._name = name;
+        this._age = age;
+        this._state = state;
+    }
+}
+
+const seungil = new People("이승일", 26, "Studying");
+```
+## Getter, Setter
+클래스 내 데이터 프로퍼티의 값을 참조하거나 수정할 수 있게 해주는 프로퍼티이다. get과 set 키워드를 사용해 선언할 수 있다.
+``` javascript
+class People {
+    constructor(name, age, state) {
+        this._name = name;
+        this._age = age;
+        this._state = state;
+    }
+
+    get state() {
+        return this._state;
+    }
+
+    set state(state) {
+        this._state = state;
+    }
+}
+
+const seungil = new People("이승일", 26, "Studying");
+seungil.state = "Resting";
+```
+## 상속
+클래스가 특정 클래스의 형태를 물려받게 할 수 있는데, 이를 상속 관계에 있다고 하며 extends 키워드로 사용할 수 있다. 상속 관계에서 상속을 해주는 클래스는 부모 클래스라 하며, 상속을 받는 클래스는 자식 클래스라고 한다. 자식 클래스는 부모 클래스의 생성자를 호출해 사용하거나, 프로퍼티를 오버라이딩하여 사용할 수 있다.
+``` javascript
+class Weapon {
+    constructor(name, power, skill) {
+        this._name = name;
+        this._power = power;
+        this._skill = skill;
+    }
+
+    useSkill() {
+        console.log("기본 무기는 스킬이 없습니다!");
+    }
+}
+
+class Sword extends Weapon {
+    constructor(name, power, skillPower) {
+        super(name, power, "가르기");
+
+        this._skillPower = skillPower;
+    }
+
+    useSkill() {
+        console.log(`스킬 사용 : ${this._skill}, ${this._skillPower}의 데미지를 입혔다!`);
+    }
+}
+
+let oldSword = new Sword("낡은 검", 10, 30);
+oldSword.useSkill(); // 스킬 사용 : 가르기, 30의 데미지를 입혔다!
+```
+## 정적 메소드
+인스턴스를 만들 필요가 없는 클래스의 메소드, 특정 클래스를 상속받는 인스턴스들을 아우르는 메소드가 필요할 때 사용한다. static 키워드를 붙여 선언할 수 있다.
+``` javascript
+class Calculator {
+    static add(lhs, rhs) {
+        return lhs + rhs;
+    }
+
+    static sum(...numbers) {
+        let sum = 0;
+        for (let number of numbers) {
+            sum += number;
+        }
+
+        return sum;
+    }
+}
+
+console.log(Calculator.add(2, 1)); // 3
+console.log(Calculator.sum(...[1, 2, 3, 4, 5])); // 15
+console.log(Calculator.sum(...[1, 2, 3, 4, 5, 6, 7])); // 28
+
+class People {
+    constructor(name, power) {
+        this._name = name;
+        this._power = power;
+    }
+
+    static comparePower(lhs, rhs) {
+        return rhs._power - lhs._power;
+    }
+}
+
+let peoples = [
+    new People("김민수", 10),
+    new People("이승일", 3),
+    new People("정만수", 50),
+]
+
+peoples.sort(People.comparePower);
+console.log(peoples);
+//[
+//  People { _name: '정만수', _power: 50 },
+//  People { _name: '김민수', _power: 10 },
+//  People { _name: '이승일', _power: 3 }
+//]
+```
+## 클로저
+선언 당시의 외부 환경을 캡처해 참조할 수 있는 함수를 말한다. javascript에서는 함수 호출 시점이 아닌 선언 시점에 의해 상위 스코프를 결정하기 때문에, 대다수의 함수가 클로저이다.
+``` javascript
+function add(num1) {
+    return function (num2) {
+        return num1 + num2;
+    }
+}
+
+let add21 = add(21);
+console.log(add21(9));
+let add7 = add(7);
+console.log(add7(14));
+```
+### 클로저 사용 이유
+1. 캡슐화 및 은닉화가 가능하다.
+    - 다른 객체지향 언어의 private 접근한정자처럼, 스코프를 폐쇄하여 캡슐화 및 은닉화가 가능하다. 호출 즉시 함수를 return하는 함수를 호출하면, 호출된 함수는 바로 사라져 반환된 클로저만이 그 환경을 기억하고 있기 때문이다.
+2. 모듈화가 가능하다.
+    - 위의 예시처럼 같은 함수더라도 다른 값을 가지게 할 수 있다. 이를 활용하면, 재사용성이 좋은 코드를 작성할 수 있으며 독립적으로 작동하게 할 수 있다.
