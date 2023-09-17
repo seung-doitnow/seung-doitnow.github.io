@@ -1,0 +1,80 @@
+---
+layout: posts
+title:  "2023.08.30 수요일"
+date:   2023-08-30 21:00:00 +0900
+categories: TIL
+---
+---
+# 배포
+## EC2 Instance 생성
+1. 이름 및 태그 설정
+2. AMI 설정
+3. 아키텍처 선택
+4. 인스턴스 유형 선택
+5. 키 페어 선택
+6. 네트워크 설정
+7. 스토리지 구성 선택
+
+## EC2 Instance 접속
+1. SSH를 사용해서 접속하기 위해 인바운드 규칙에서 22번 포트 개방
+2. 외부 접속을 허용하기 위해 80번 포트 개방
+3. 보안을 위해 지급 받은 키 페어를 읽기 권한으로 설정
+```shell
+sudo chmod 400 (키 페어 파일 이름)
+```
+
+4. 키 페어를 사용한 SSH 인증 방식으로 EC2 로그인
+```shell
+ssh -i (키 페어 파일 끌어다두기) ubuntu@(인스턴스의 퍼블릭 주소)
+```
+
+## 리눅스 명령어
+```shell
+ls : 현 위치의 파일들을 보여준다.
+ls -la : 현 위치의 숨김 파일을 포함한 모든 파일들을 보여준다.
+cd (경로) : 입력받은 경로로 이동한다. 경로에는 폴더 이름, ..(상위 폴더로), 폴더 주소가 올 수 있다.
+mkdir (폴더 이름) : 현 위치에 폴더를 생성한다.
+cp -r (복사할 파일 및 폴더) (붙여넣기 할 위치) : 파일 및 폴더를 원하는 경로로 복사한다.
+rm -rf (지울 파일 및 폴더) : 매우 위험한 명령어, 어떤 파일이든 삭제하기 때문에 운영체제와 관련된 파일도 삭제할 수 있다. 따라서, 사용에 상당히 주의를 요한다.
+sudo : 명령어 앞에 사용하면 관리자 권한으로 실행한다.
+```
+
+## Node.js 설치
+1. 노드 설치에 필요한 패키지 설치
+```shell
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+```
+2. 설치가 완료된 후, 로그에 나오는 명령어를 입력해 설치
+```shell
+sudo apt-get install -y node.js
+```
+
+## 프로젝트 세팅
+1. 프로젝트 클론
+```shell
+git clone (프로젝트 주소)
+```
+2. yarn 설치
+```shell
+sudo npm install -g yarn
+```
+3. yarn 명령어를 통해 필요한 패키지 설치
+```shell
+yarn
+```
+4. PM2 설치를 위해 관리자 계정으로 전환
+```shell
+sudo -s
+```
+5. yarn을 통해 PM2 설치
+```shell
+yarn global add pm2
+```
+6. 포트 포워딩
+```shell
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port (서버가 사용할 포트 번호)
+```
+7. PM2로 프로젝트 실행
+```shell
+pm2 start app.js
+```
