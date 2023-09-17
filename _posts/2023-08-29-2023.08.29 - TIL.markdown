@@ -1,0 +1,55 @@
+---
+layout: posts
+title:  "2023.08.29 화요일"
+date:   2023-08-29 21:00:00 +0900
+categories: TIL
+---
+---
+# 미들웨어
+express에서 미들웨어란 HTTP 요청과 응답 사이, 즉 클라이언트의 요청과 서버의 응답 사이에서 다양한 기능을 하는 함수들을 말한다. 이 미들웨어의 순서와 기능을 잘 설계해서 요청에 맞게 작동하게 하는 것이 express의 핵심이다.
+## application 레벨 미들웨어
+``` javascript
+app.use(path, callback...)
+
+// 예시
+app.use("/", (req, res, next) => {
+    expression
+})
+```
+## router 레벨 미들웨어
+``` javascript
+router.use(path, callback...)
+
+// 예시
+router.use("/post", (req, res, next) => {
+    expression
+})
+```
+## 오류 처리 미들웨어
+다른 미들웨어와 다르게 callback 인자가 4개여야 한다.
+``` javascript
+app.use(path, callback...)
+
+// 예시
+app.use("/", (err, req, res, next) => {
+    expression
+})
+```
+
+# 데이터 유효성 검증 라이브러리 joi
+데이터 검증을 위한 javascript 라이브러리이다.
+``` javascript
+// 각종 타입 검사
+const data = joi.number(); // type이 number인지
+const data = joi.string(); // type이 string인지
+
+// 패턴 검사
+const data = joi.string().email(); // type이 string이며 email 형식인지
+const data = joi.string().ip(); // type이 string이며 ip 형식인지
+
+// 객체는 키별로 다른 유효성 검사를 실시할 수 있다.
+const data = joi.object({
+    key: joi.string(), // 해당 키 값에 해당하는 데이터의 type이 string인지
+    key: joi.number(), // 해당 키 값에 해당하는 데이터의 type이 number인지
+})
+```
