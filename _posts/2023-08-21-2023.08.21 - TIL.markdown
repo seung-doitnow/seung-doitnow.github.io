@@ -1,0 +1,53 @@
+---
+layout: posts
+title:  "2023.08.21 월요일"
+date:   2023-08-21 21:00:00 +0900
+categories: TIL
+---
+---
+# 프로그래머스 - Lv.1: 약수의 개수와 덧셈
+두 정수가 주어지면 그 두 정수 사이의 수들의 약수가 홀수인지 짝수인지에 따라 덧셈이나 뺄셈을 한 결과를 반환하는 문제였다.
+``` javascript
+function solution(left, right) {
+    let sum = 0;
+    for (let i = left; i <= right; i++) {
+        let count = 0;
+        let sqrt = Math.sqrt(i);
+        for (let j = 1; j <= sqrt; j++) {
+            if (i % j === 0) {
+                if (j * j !== i) {
+                    count += 2;
+                } else {
+                    count++;
+                }
+            }
+        }
+        
+        if (count % 2 === 0) {
+            sum += i;
+        } else {
+            sum -= i;
+        }
+    }
+    
+    return sum;
+}
+```
+나는 이 문제를 단순하게 접근했다. 주어진 두 정수에서 작은 정수를 시작으로 큰 정수까지 한 번씩 순회하는 반복문을 작성하고, 그 정수들마다 약수의 개수를 세는 반복문을 작성하였다. 약수를 셀 때 반복문을 끝내는 기준을 고민 했었는데, 몇몇 정수의 약수를 직접 적어보다보니 제곱근 이상을 넘어가지 않는다는 사실을 발견했고 연산을 줄이기 위해 기준점으로 제곱근을 잡았다. 그렇게 약수를 카운팅하고, 개수가 홀수인지 짝수인지를 체크해서 분기문으로 덧셈과 뺄셈을 하도록 나누었다. 마지막으로 이 연산들이 행해진 sum을 반환하여 해결하였다.
+
+문제를 해결하고, 다른 사람은 어떻게 풀었는지 궁금해서 찾아보던 중 흥미로운 사실을 알아냈다. 어떤 정수의 제곱근이 정수일 때, 약수의 개수는 홀수라는 점이었다. 해당 사실을 알게된 후, 문제를 다시 풀어보았다.
+``` javascript
+function solution(left, right) {
+    let answer = 0;
+    for (let i = left; i <= right; i++) {
+        if (Number.isInteger(Math.sqrt(i))) {
+            answer -= i;
+        } else {
+            answer += i;
+        }
+    }
+
+    return answer;
+}
+```
+기존 풀이보다 훨씬 간결하고, 가독성이 좋다. 심지어 연산도 더 적게 한다.
