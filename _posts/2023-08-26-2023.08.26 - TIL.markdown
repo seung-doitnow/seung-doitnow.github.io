@@ -1,0 +1,40 @@
+---
+layout: posts
+title:  "2023.08.26 토요일"
+date:   2023-08-26 21:00:00 +0900
+categories: TIL
+---
+---
+# request, response
+웹 통신에서 클라이언트와 서버가 주고 받는 메시지를 말한다.
+## request
+클라이언트가 서버에게 보내는 요청을 말한다. URL, HTTP method, header, body 등이 있다.
+## response
+서버가 클라이언트에게 보내는 응답을 말한다. status code, response data, response body 등이 있다.
+
+# express
+## 서버 시작
+``` javascript
+app.listen((포트 번호), (콜백 함수))
+```
+http.Server.listen() 메소드와 똑같은 역할을 한다고 보면 된다. 입력되는 포트 번호로 서버를 시작하고, 시작되면 콜백 함수를 실행한다. 만약, 포트 번호를 할당하지 않으면 사용되지 않는 임의의 포트 중 하나를 선택해 실행한다.
+## req 객체
+### req.ip
+요청을 보낸 client의 주소가 담긴다.
+### req.body
+클라이언트가 보내는 data가 담기는 객체이다. 기본적으로 undefined 값을 가지고, body-parsing middleware를 사용해야 제대로 된 값을 전달받을 수 있다.
+### req.params
+라우터 매개 변수가 담기는 객체이다.
+### req.query
+쿼리 스트링으로 전달된 정보가 담긴 객체이다.
+### req.cookies
+클라이언트의 cookie 정보가 담긴 객체이다. 기본 값은 {}이고, cookie-parser를 사용해야 제대로 된 값이 들어온다.
+## res 객체
+### res.status
+클라이언트에게 보내줄 상태 코드가 지정되는 객체입니다.
+### res.send
+클라이언트에게 data를 보낼 때 사용하는 객체이다. 입력된 값에 따라 자동으로 content-type이 설정된다.
+### res.json
+send와 마찬가지로 data를 보낼 때 사용하지만, json 형태로 보낼 때 사용한다.
+### res.cookie
+클라이언트에게 전달할 쿠키를 담는 객체이다.
