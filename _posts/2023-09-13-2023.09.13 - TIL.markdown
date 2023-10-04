@@ -1,0 +1,16 @@
+---
+layout: posts
+title:  "2023.09.13 수요일"
+date:   2023-09-13 21:00:00 +0900
+categories: TIL
+---
+---
+# Controller
+NestJS에서 Controller는 클라이언트의 요청을 받고 필요한 응답을 반환해주는 역할을 맡고 있다.
+## @Controller(주소)
+@Controller(주소) 데코레이터를 사용하면 NestJS가 route 대상으로 인식하게 된다. NestJS는 데코레이터와 함께 전달된 주소와 그 내부의 @Get(), @Post()와 같은 HTTP 데코레이터의 주소를 참고해서 엔드포인트로 설정한다.
+## Controller 관련 데코레이터
+### 메서드 관련
+- @Post(), @Get(), @Put(), @Patch(), @Delete() 등을 사용해서 어떤 종류의 메서드에 route 될 지 알려줄 수 있다.
+### express 관련
+- @Req(), @Res(), @Param(), @Headers(), @Body() 등을 사용해서 매개변수를 지정하면, 원하는 데이터를 지정해서 받을 수 있다.
