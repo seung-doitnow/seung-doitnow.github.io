@@ -1,0 +1,20 @@
+---
+layout: posts
+title:  "2023.09.14 목요일"
+date:   2023-09-14 21:00:00 +0900
+categories: TIL
+---
+---
+# Module
+NestJS에서 Module은 Controller와 Provider들을 하나로 묶어주는 역할을 한다. 주로 기능이나 도메인을 기준으로 해서 묶는다. 기본적으로 
+## @Module()
+@Module()을 붙이면 NestJS에서 필요한 모듈에 대한 메타 데이터들을 제공받을 수 있다.
+## Module의 구성 요소
+### providers
+- NestJS의 Injector가 해당 모듈 내에서 사용할 공급자들을 말한다.
+### controllers
+- 마찬가지로, 모듈 내에서 사용할 컨트롤러들을 말한다.
+### imports
+- 다른 모듈에 포함된 공급자를 사용하고 싶을 때 사용한다.
+### exports
+- 기본적으로, 모듈은 캡슐화되어 다른 모듈에서 사용할 수 없지만, exports로 내보내면 다른 모듈에서 imports 해서 사용할 수 있게 된다.
